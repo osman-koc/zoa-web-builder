@@ -1,0 +1,9 @@
+fastapi==0.109.2
+uvicorn==0.27.1
+transformers==4.37.2
+numpy<2.0.0  # NumPy 1.x sürümüne sabitleyelim
+--find-links https://download.pytorch.org/whl/torch_stable.html
+torch==2.2.1+cpu  # CPU versiyonunu kullanalım
+datasets==2.17.1
+python-dotenv==1.0.1
+pydantic==2.6.1
