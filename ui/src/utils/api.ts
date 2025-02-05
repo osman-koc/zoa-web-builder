@@ -3,6 +3,15 @@
  */
 export const getCsrfToken = async (): Promise<string> => {
   try {
+    const csrfTokenFromCookie = document.cookie
+      .split("; ")
+      .find(row => row.startsWith("XSRF-TOKEN="))
+      ?.split("=")[1];
+
+    if (csrfTokenFromCookie) {
+      return csrfTokenFromCookie;
+    }
+
     const response = await fetch("http://localhost:3000/api/csrf-token", {
       credentials: "include",
     });
@@ -25,15 +34,7 @@ export const getCsrfToken = async (): Promise<string> => {
 export const generateWebsite = async (prompt: string): Promise<string> => {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 60000 * 5);
-
-  const csrfToken = document.cookie
-    .split("; ")
-    .find(row => row.startsWith("XSRF-TOKEN="))
-    ?.split("=")[1];
-
-  if (!csrfToken) {
-    throw new Error("CSRF token not found.");
-  }
+  const csrfToken =  await getCsrfToken();
 
   try {
     const response = await fetch("http://localhost:3000/api/generate", {
