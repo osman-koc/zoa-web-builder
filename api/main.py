@@ -23,7 +23,7 @@ class WebResponse(BaseModel):
 
 generator = WebGenerator()
 
-@app.post("/generate", response_model=WebResponse)
+@app.post("/api/generate", response_model=WebResponse)
 async def generate_website(request: PromptRequest) -> WebResponse:
     try:
         generated_code = generator.generate(request.prompt)

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Bot, Code2, Moon, Sun } from 'lucide-react';
 import PromptStage from './components/PromptStage';
 import PreviewStage from './components/PreviewStage';
-// import { mockApiResponse } from './utils/mockApi';
 import { generateWebsite } from './utils/api'
 import { useTheme } from './hooks/useTheme';
 
@@ -10,17 +9,19 @@ function App() {
   const [stage, setStage] = useState<'prompt' | 'preview'>('prompt');
   const [generatedCode, setGeneratedCode] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { theme, toggleTheme } = useTheme();
 
   const handlePromptSubmit = async (prompt: string) => {
     setLoading(true);
+    setError(null);
     try {
-      // const response = await mockApiResponse(prompt);
       const response = await generateWebsite(prompt);
       setGeneratedCode(response);
       setStage('preview');
     } catch (error) {
       console.error('Error generating code:', error);
+      setError(error instanceof Error ? error.message : 'An unexpected error occurred');
     } finally {
       setLoading(false);
     }
@@ -58,6 +59,7 @@ function App() {
         </nav>
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {error && <div className="text-red-500 mb-4">{error}</div>} {/* Display error message */}
           {stage === 'prompt' ? (
             <PromptStage onSubmit={handlePromptSubmit} loading={loading} />
           ) : (
