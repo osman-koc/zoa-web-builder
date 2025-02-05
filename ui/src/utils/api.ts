@@ -22,9 +22,18 @@ export const getCsrfToken = async (): Promise<string> => {
 /**
  * Website generator API çağrısı yapar.
  */
-export const generateWebsite = async (prompt: string, csrfToken: string): Promise<string> => {
+export const generateWebsite = async (prompt: string): Promise<string> => {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 60000);
+  const timeoutId = setTimeout(() => controller.abort(), 60000 * 5);
+
+  const csrfToken = document.cookie
+    .split("; ")
+    .find(row => row.startsWith("XSRF-TOKEN="))
+    ?.split("=")[1];
+
+  if (!csrfToken) {
+    throw new Error("CSRF token not found.");
+  }
 
   try {
     const response = await fetch("http://localhost:3000/api/generate", {
@@ -46,10 +55,6 @@ export const generateWebsite = async (prompt: string, csrfToken: string): Promis
     }
 
     const data = await response.json();
-    if (!data.code) {
-      throw new Error("Invalid code received from API");
-    }
-
     return data.code;
   } catch (error) {
     console.error("API Request Failed:", error);

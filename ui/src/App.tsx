@@ -34,7 +34,7 @@ function App() {
     setLoading(true);
     setError(null);
     try {
-      const response = await generateWebsite(prompt, csrfToken);
+      const response = await generateWebsite(prompt);
       setGeneratedCode(response);
       setStage("preview");
     } catch (error) {
@@ -81,9 +81,9 @@ function App() {
           {stage === "prompt" ? (
             <PromptStage onSubmit={handlePromptSubmit} loading={loading} />
           ) : (
-            <PreviewStage 
-              code={generatedCode} 
-              onBack={() => setStage("prompt")} 
+            <PreviewStage
+              code={generatedCode}
+              onBack={() => setStage("prompt")}
             />
           )}
         </main>
