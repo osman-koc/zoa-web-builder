@@ -1,6 +1,15 @@
 /**
  * CSRF Token'ı API'den alır.
  */
+
+const getBaseUrl = (): string => {
+  if (process.env.NODE_ENV === 'development') {
+    return 'http://localhost:3000';
+  } else {
+    return 'https://zoa-api.osmankoc.dev';
+  }
+};
+
 export const getCsrfToken = async (): Promise<string> => {
   try {
     const csrfTokenFromCookie = document.cookie
@@ -12,7 +21,7 @@ export const getCsrfToken = async (): Promise<string> => {
       return csrfTokenFromCookie;
     }
 
-    const response = await fetch("http://localhost:3000/api/csrf-token", {
+    const response = await fetch(`${getBaseUrl()}/api/csrf-token`, {
       credentials: "include",
     });
 
@@ -37,7 +46,7 @@ export const generateWebsite = async (prompt: string): Promise<string> => {
   const csrfToken =  await getCsrfToken();
 
   try {
-    const response = await fetch("http://localhost:3000/api/generate", {
+    const response = await fetch(`${getBaseUrl()}/api/generate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
