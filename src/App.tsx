@@ -87,6 +87,27 @@ function App() {
             />
           )}
         </main>
+
+        <footer className="border-t bg-white/50 dark:bg-gray-900/50 dark:border-gray-800 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-sm text-gray-600 dark:text-gray-400">
+            <p>
+              &copy; 2025{" "}
+              <span className="font-bold hover:underline">
+                ZOA
+              </span>
+              . All rights reserved. Developed by{" "}
+              <a
+                href="https://osmankoc.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold hover:underline"
+              >
+                Osman Koç
+              </a>
+              .
+            </p>
+          </div>
+        </footer>
       </div>
     </div>
   );
